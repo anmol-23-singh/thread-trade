@@ -7,39 +7,48 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  if (!user) return null;
+  if (!user || location.pathname === '/login' || location.pathname === '/register') return null;
 
   const links = [
     ['/listings', 'Browse'],
     ['/dashboard', 'Dashboard'],
-    ...(user.role === 'admin' ? [['/admin', 'Admin']] : []),
   ];
 
   return (
-    <div className="flex items-center justify-between px-8 py-4 border-b border-ink/10 bg-paperRaised sticky top-0 z-20">
-      <Link to="/listings" className="font-display font-bold text-xl flex items-center gap-2">
+    <div className="flex items-center justify-between px-8 py-4 border-b border-[#4E3629]/10 bg-[#FBFAF4]/45 backdrop-blur-md sticky top-0 z-20">
+      <Link to="/listings" className="font-display font-bold text-xl flex items-center gap-2 text-[#4E3629]">
         🧵 Thread Trade
       </Link>
-      <div className="flex gap-1">
-        {links.map(([path, label]) => (
-          <button
-            key={path}
-            onClick={() => navigate(path)}
-            className={`px-3.5 py-2 rounded-full text-sm font-medium ${
-              location.pathname.startsWith(path) ? 'bg-ink text-paperRaised' : 'text-ink/70 hover:bg-ink/5'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+      
+      {/* Centered Capsule Tabs */}
+      <div className="flex gap-1.5 bg-[#DFD3C3]/30 border border-[#4E3629]/10 p-1 rounded-full backdrop-blur-sm">
+        {links.map(([path, label]) => {
+          const isActive = location.pathname.startsWith(path);
+          return (
+            <button
+              key={path}
+              onClick={() => navigate(path)}
+              className={`px-5 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
+                isActive 
+                  ? 'bg-[#4E3629] text-[#FBFAF4] shadow-sm' 
+                  : 'text-[#4E3629]/75 hover:bg-[#4E3629]/5 hover:text-[#4E3629]'
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
-      <div className="flex items-center gap-2 text-sm border border-ink/10 rounded-full px-3 py-1.5 bg-paperRaised">
-        <span className="w-2 h-2 rounded-full bg-green inline-block" />
-        {user.name}
-        <button onClick={logout} className="underline text-xs text-ink/60 ml-1">
+
+      {/* User profile pill */}
+      <div className="flex items-center gap-2.5 text-sm border border-[#4E3629]/15 rounded-full px-4 py-1.5 bg-[#FBFAF4]/60 backdrop-blur-sm shadow-sm">
+        <span className="w-2 h-2 rounded-full bg-[#4C7A5D] inline-block" />
+        <span className="font-medium text-[#4E3629]">{user.name}</span>
+        <button onClick={logout} className="underline text-xs text-[#4E3629]/65 hover:text-[#4E3629] ml-1">
           Log out
         </button>
       </div>
     </div>
   );
 }
+

@@ -1,13 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const PushPin = () => (
+  <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center z-10 pointer-events-none">
+    {/* Pin head */}
+    <div className="w-3 h-3 rounded-full bg-[#78909C] border border-[#455A64] shadow-sm" />
+    {/* Pin shaft */}
+    <div className="w-[1.2px] h-3 bg-gray-400 -mt-[1px]" />
+  </div>
+);
+
 export default function ListingCard({ listing }) {
   const navigate = useNavigate();
   return (
     <div
       onClick={() => navigate(`/listings/${listing._id}`)}
-      className="hangtag bg-paperRaised border border-ink/10 shadow-sm p-4 cursor-pointer hover:-translate-y-1 hover:shadow-md transition-all duration-200 group"
+      className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 shadow-sm p-4.5 rounded-xl cursor-pointer hover:-translate-y-1.5 hover:shadow-md transition-all duration-300 group"
     >
+      <PushPin />
       <div className="flex justify-between items-center mb-1.5">
         <div className="text-[11px] font-mono text-ink/50">{listing._id.slice(-6).toUpperCase()}</div>
         {listing.brand && listing.brand !== 'Unbranded' && (
@@ -36,3 +46,4 @@ export default function ListingCard({ listing }) {
     </div>
   );
 }
+

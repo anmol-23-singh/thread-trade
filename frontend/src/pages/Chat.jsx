@@ -4,6 +4,13 @@ import { swapApi, chatApi, reviewApi } from '../api/services';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useSocket } from '../hooks/useSocket.js';
 
+const PushPin = () => (
+  <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center z-10 pointer-events-none">
+    <div className="w-3 h-3 rounded-full bg-[#78909C] border border-[#455A64] shadow-sm" />
+    <div className="w-[1.2px] h-3 bg-gray-400 -mt-[1px]" />
+  </div>
+);
+
 export default function Chat() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -73,11 +80,12 @@ export default function Chat() {
 
   return (
     <div className="max-w-2xl mx-auto px-8 py-9">
-      <button onClick={() => navigate('/dashboard')} className="text-sm text-ink/60 mb-4">← Back to dashboard</button>
+      <button onClick={() => navigate('/dashboard')} className="text-sm text-[#4E3629]/75 hover:text-[#4E3629] mb-4">← Back to dashboard</button>
       <div className="text-xs uppercase tracking-wide text-[#A67A1E] font-semibold">Negotiation</div>
-      <h1 className="font-display text-2xl font-bold mt-1">Chat with {other.name}</h1>
+      <h1 className="font-display text-2xl font-bold mt-1 text-[#4E3629]">Chat with {other.name}</h1>
 
-      <div className="bg-paperRaised border border-ink/10 rounded-lg shadow-sm mt-4 flex flex-col h-[520px]">
+      <div className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 rounded-xl shadow-sm mt-4 flex flex-col h-[520px]">
+        <PushPin />
         <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2.5">
           {messages.map((m) => (
             <div

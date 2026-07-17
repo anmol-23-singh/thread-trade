@@ -16,3 +16,11 @@ export function AdminRoute({ children }) {
   if (user.role !== 'admin') return <Navigate to="/listings" replace />;
   return children;
 }
+
+export function GuestRoute({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return <div className="p-10 text-center text-ink/60">Loading...</div>;
+  if (user) return <Navigate to="/listings" replace />;
+  return children;
+}
+

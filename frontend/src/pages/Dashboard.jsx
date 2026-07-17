@@ -69,12 +69,16 @@ export default function Dashboard() {
       <div className="text-xs uppercase tracking-wide text-[#A67A1E] font-semibold">Your account</div>
       <h1 className="font-display text-3xl font-bold mt-1">{user?.name}'s dashboard</h1>
 
-      <div className="flex gap-6 border-b border-ink/10 mt-6">
+      <div className="flex gap-2 border-b border-[#4E3629]/20 mt-6 overflow-x-auto pb-0">
         {tabs.map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}
-            className={`pb-2.5 text-sm ${tab === key ? 'border-b-2 border-gold font-semibold' : 'text-ink/60'}`}
+            className={`px-4 py-2.5 text-xs font-bold rounded-t-xl transition-all duration-200 ${
+              tab === key 
+                ? 'bg-[#C4A482] text-[#4E3629] border border-[#4E3629]/30 border-b-transparent shadow-sm' 
+                : 'bg-[#FBFAF4]/35 text-[#4E3629]/65 hover:bg-[#FBFAF4]/65 border border-transparent border-b-none'
+            }`}
           >
             {label}
           </button>

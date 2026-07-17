@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { listingApi, swapApi } from '../api/services';
 
+const PushPin = () => (
+  <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center z-10 pointer-events-none">
+    <div className="w-3 h-3 rounded-full bg-[#78909C] border border-[#455A64] shadow-sm" />
+    <div className="w-[1.2px] h-3 bg-gray-400 -mt-[1px]" />
+  </div>
+);
+
 export default function SwapRequestPage() {
   const { itemId } = useParams();
   const navigate = useNavigate();
@@ -48,19 +55,21 @@ export default function SwapRequestPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-8 py-9">
-      <button onClick={() => navigate(-1)} className="text-sm text-ink/60 mb-4">← Back</button>
+      <button onClick={() => navigate(-1)} className="text-sm text-[#4E3629]/75 hover:text-[#4E3629] mb-4">← Back</button>
       <div className="text-xs uppercase tracking-wide text-[#A67A1E] font-semibold">Propose a swap</div>
-      <h1 className="font-display text-3xl font-bold mt-1">Trade for "{wanted.title}"</h1>
+      <h1 className="font-display text-3xl font-bold mt-1 text-[#4E3629]">Trade for "{wanted.title}"</h1>
 
       {mine.length === 0 ? (
-        <div className="bg-paperRaised border border-ink/10 rounded-lg p-6 mt-6">
+        <div className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 rounded-xl p-6 mt-6">
+          <PushPin />
           <p className="text-sm">You don't have any items listed yet, so there's nothing to offer in trade.</p>
-          <button onClick={() => navigate('/dashboard')} className="bg-ink text-paperRaised rounded px-4 py-2 text-sm mt-3">
+          <button onClick={() => navigate('/dashboard')} className="bg-[#4E3629] text-paperRaised rounded px-4 py-2 text-sm mt-3">
             List an item first
           </button>
         </div>
       ) : (
-        <div className="bg-paperRaised border border-ink/10 rounded-lg shadow-sm p-6 mt-6 space-y-4">
+        <div className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 rounded-xl shadow-sm p-6 mt-6 space-y-4">
+          <PushPin />
           {error && <div className="text-sm text-rust bg-rust/10 border border-rust/20 rounded p-2">{error}</div>}
           <div>
             <label className="block text-xs font-semibold text-ink/60 mb-1">Choose an item to offer</label>
