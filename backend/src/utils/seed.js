@@ -6,10 +6,11 @@ const Listing = require('../models/Listing');
 const logger = require('../config/logger');
 
 const demoUsers = [
-  { name: 'Ananya Rao', email: 'ananya@example.com', password: 'Password123', location: { city: 'Varanasi', state: 'Uttar Pradesh' } },
-  { name: 'Devika Menon', email: 'devika@example.com', password: 'Password123', location: { city: 'Kochi', state: 'Kerala' } },
-  { name: 'Rohit Malhotra', email: 'rohit@example.com', password: 'Password123', location: { city: 'Lucknow', state: 'Uttar Pradesh' } },
-  { name: 'Admin User', email: 'admin@example.com', password: 'Password123', role: 'admin', location: { city: 'Lucknow', state: 'Uttar Pradesh' } },
+  { name: 'Ananya Rao', email: 'ananya@example.com', password: 'Swap_123', location: { city: 'Varanasi', state: 'Uttar Pradesh' } },
+  { name: 'Devika Menon', email: 'devika@example.com', password: 'Swap_123', location: { city: 'Kochi', state: 'Kerala' } },
+  { name: 'Rohit Malhotra', email: 'rohit@example.com', password: 'Swap_123', location: { city: 'Lucknow', state: 'Uttar Pradesh' } },
+  { name: 'Admin User', email: 'admin@example.com', password: 'Swap_123', role: 'admin', location: { city: 'Lucknow', state: 'Uttar Pradesh' } },
+  { name: 'Vipin Singh', email: 'anitamaxxwin0909@gmail.com', password: 'Swap_123', location: { city: 'Varanasi', state: 'Uttar Pradesh' } },
 ];
 
 async function run() {
@@ -17,7 +18,7 @@ async function run() {
   await Promise.all([User.deleteMany({}), Listing.deleteMany({})]);
 
   const users = await User.create(demoUsers);
-  const [ananya, devika, rohit] = users;
+  const [ananya, devika, rohit, admin, vipin] = users;
 
   await Listing.create([
     {
@@ -76,10 +77,84 @@ async function run() {
       location: { city: 'Varanasi', state: 'Uttar Pradesh' },
       images: [],
     },
+    {
+      owner: vipin._id,
+      title: 'crazy shirts',
+      description: 'have this in my priority',
+      category: 'Shirt',
+      brand: 'Versace',
+      size: '32',
+      gender: 'Men',
+      condition: 'Like New',
+      estimatedValue: 4000,
+      tags: ['shirts', 'crazy'],
+      location: { city: 'Varanasi', state: 'Uttar Pradesh' },
+      images: [],
+    },
+    {
+      owner: vipin._id,
+      title: 'crazy shoes',
+      description: 'Brand new kicks',
+      category: 'Footwear',
+      brand: 'Nike',
+      size: '10',
+      gender: 'Unisex',
+      condition: 'New with tags',
+      estimatedValue: 8000,
+      tags: ['shoes', 'kicks'],
+      location: { city: 'Varanasi', state: 'Uttar Pradesh' },
+      images: [],
+    },
+    {
+      owner: vipin._id,
+      title: 'armandoooo shirts',
+      description: 'Cool armandoooo shirts',
+      category: 'Shirt',
+      brand: 'Armani',
+      size: 'M',
+      gender: 'Men',
+      condition: 'Good',
+      estimatedValue: 2500,
+      tags: ['shirt', 'armani'],
+      location: { city: 'Varanasi', state: 'Uttar Pradesh' },
+      images: [],
+    },
+    {
+      owner: vipin._id,
+      title: 'cool winterwear',
+      description: 'cool winterwear',
+      category: 'Jacket',
+      brand: 'Moncler',
+      size: 'L',
+      gender: 'Unisex',
+      condition: 'Like New',
+      estimatedValue: 5000,
+      tags: ['winterwear', 'jacket'],
+      location: { city: 'Varanasi', state: 'Uttar Pradesh' },
+      images: [],
+    },
+    {
+      owner: vipin._id,
+      title: 'jeans',
+      description: 'Classic blue jeans',
+      category: 'Jeans',
+      brand: 'Levis',
+      size: '34',
+      gender: 'Men',
+      condition: 'Good',
+      estimatedValue: 1200,
+      tags: ['jeans', 'levis'],
+      location: { city: 'Varanasi', state: 'Uttar Pradesh' },
+      images: [],
+    },
   ]);
 
-  logger.info(`Seeded ${users.length} users and 4 listings.`);
-  logger.info('Demo login: ananya@example.com / Password123 (and devika@, rohit@, admin@ — same password)');
+  logger.info(`Seeded ${users.length} users and 9 listings.`);
+  logger.info('Demo logins (password: Swap_123 for all):');
+  logger.info('  - Vipin Singh: anitamaxxwin0909@gmail.com');
+  logger.info('  - Ananya Rao: ananya@example.com');
+  logger.info('  - Devika Menon: devika@example.com');
+  logger.info('  - Rohit Malhotra: rohit@example.com');
   await mongoose.disconnect();
   process.exit(0);
 }

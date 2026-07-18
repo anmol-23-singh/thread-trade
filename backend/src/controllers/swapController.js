@@ -26,10 +26,11 @@ const createSwapRequest = asyncHandler(async (req, res) => {
     res.status(403);
     throw new Error('You can only offer items you own');
   }
-  if (wanted.owner.toString() === req.user._id.toString()) {
-    res.status(400);
-    throw new Error('You cannot swap for your own item');
-  }
+  // Allow users to swap their own items for testing/testing flows as requested
+  // if (wanted.owner.toString() === req.user._id.toString()) {
+  //   res.status(400);
+  //   throw new Error('You cannot swap for your own item');
+  // }
   if (offered.status !== 'Available' || wanted.status !== 'Available') {
     res.status(409);
     throw new Error('Both items must be available to start a swap');

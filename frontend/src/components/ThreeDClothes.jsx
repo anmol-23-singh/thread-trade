@@ -14,7 +14,7 @@ export default function ThreeDClothes() {
 
     // 1. Scene & Camera Setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xFBC5C5, 0.05); // Cute pastel pink fog to match background
+    scene.fog = new THREE.FogExp2(0xF6D0C9, 0.05); // Elegant champagne gold & pastel pink fog
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
     camera.position.set(0, 0, 7.8);
@@ -645,7 +645,7 @@ export default function ThreeDClothes() {
   }, []);
 
   return (
-    <div className="w-full h-full relative overflow-hidden flex flex-col items-center justify-center p-6 select-none bg-gradient-to-tr from-[#FBC5C5] to-[#FDE2E4]">
+    <div className="w-full h-full relative overflow-hidden flex flex-col items-center justify-center p-6 select-none bg-gradient-to-tr from-[#E8C88B] via-[#F6D0C9] to-[#FDE2E4]">
       {/* Delicate Grid Overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(#212c3903_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none z-0" />
       

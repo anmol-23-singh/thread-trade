@@ -84,6 +84,12 @@ export default function ItemDetail() {
           </p>
 
           <div className="flex items-center gap-3 mt-5">
+            <button
+              onClick={() => navigate(`/swap/${listing._id}`)}
+              className="bg-ink text-paperRaised rounded px-5 py-2.5 text-sm font-semibold"
+            >
+              Propose a swap →
+            </button>
             {isMine ? (
               <>
                 <span className="border border-ink/10 rounded-full px-4 py-2 text-sm text-ink/70">This is your own listing</span>
@@ -95,20 +101,12 @@ export default function ItemDetail() {
                 </button>
               </>
             ) : (
-              <>
-                <button
-                  onClick={() => navigate(`/swap/${listing._id}`)}
-                  className="bg-ink text-paperRaised rounded px-5 py-2.5 text-sm font-semibold"
-                >
-                  Propose a swap →
-                </button>
-                <button
-                  onClick={handleWishlist}
-                  className="border border-ink/20 rounded px-4 py-2.5 text-sm"
-                >
-                  {wishlisted ? '♥ Saved' : '♡ Save to wishlist'}
-                </button>
-              </>
+              <button
+                onClick={handleWishlist}
+                className="border border-ink/20 rounded px-4 py-2.5 text-sm"
+              >
+                {wishlisted ? '♥ Saved' : '♡ Save to wishlist'}
+              </button>
             )}
           </div>
         </div>
