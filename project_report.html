@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Project Report for Thread Trade - Clothing Exchange & Swap Marketplace. Created by Anmol Singh under the guidance of Unified Mentor Private Limited.">
+  <title>Thread Trade - Project Report</title>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Mermaid.js for architectural diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis' }
+    });
+  </script>
+  <style>
+    /* Global Styles */
+    :root {
+      --primary-color: #D4AF37;
+      /* Gold */
+      --primary-dark: #C49A45;
+      --bg-cream: #FDFBF7;
+      --text-dark: #2C2C2C;
+      --text-light: #5A5A5A;
+      --border-color: #E2DCCF;
+      --page-width: 210mm;
+      --page-height: 297mm;
+      --gold-bg: #E5D3B3;
+      /* Golden light brown */
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #F3ECE0;
+      color: var(--text-dark);
+      line-height: 1.6;
+      font-size: 11pt;
+    }
+
+    /* Print and Page-based Styling */
+    .page-container {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .page {
+      width: var(--page-width);
+      height: var(--page-height);
+      padding: 25mm 20mm 20mm 20mm;
+      /* standard print margins */
+      margin: 20px auto;
+      background: #FFFFFF;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: relative;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    /* Cover Page Specific Styles */
+    .cover-page {
+      background: var(--gold-bg);
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 40mm 20mm 30mm 20mm;
+      border: 3px double #8A7243;
+      box-shadow: inset 0 0 100px rgba(138, 114, 67, 0.15);
+    }
+
+    /* Page Numbers */
+    .page-number-container {
+      position: absolute;
+      bottom: 12mm;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 10pt;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    /* Heading Styles */
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: #000000;
+      font-family: 'Outfit', sans-serif;
+      margin-top: 0;
+      font-weight: 600;
+      /* slightly bold, not very bold */
+    }
+
+    h1 {
+      font-size: 26pt;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 18pt;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 6px;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      font-size: 14pt;
+      margin-top: 15px;
+      margin-bottom: 8px;
+    }
+
+    h4 {
+      font-size: 11pt;
+      color: #111;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    ul,
+    ol {
+      margin-top: 0;
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      text-align: justify;
+    }
+
+    /* Indexing / Table of Contents Page Styles */
+    .toc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .toc-table td {
+      padding: 6px 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 11pt;
+      vertical-align: bottom;
+    }
+
+    .toc-dots {
+      border-bottom: 1px dotted #888;
+      width: 100%;
+      display: inline-block;
+    }
+
+    /* Figures and Captions */
+    .figure-box {
+      text-align: center;
+      margin: 15px auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .figure-image-placeholder {
+      width: 100%;
+      height: 125mm;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background-color: #FAF6EE;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      font-style: italic;
+      color: #999;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .figure-image-actual {
+      max-width: 100%;
+      max-height: 125mm;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .figure-caption {
+      font-size: 8.5pt;
+      color: #555555;
+      text-align: center;
+      font-family: 'Outfit', sans-serif;
+      margin-top: 4px;
+      font-style: normal;
+    }
+
+    /* Mermaid container */
+    .mermaid-box {
+      width: 100%;
+      background: #FAFAFA;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 10px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mermaid {
+      font-size: 9pt !important;
+    }
+
+    /* Database Table Styling */
+    .db-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+      font-size: 9.5pt;
+    }
+
+    .db-table th,
+    .db-table td {
+      border: 1px solid var(--border-color);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .db-table th {
+      background-color: #F5ECE0;
+      color: #000;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+    }
+
+    .db-table tr:nth-child(even) td {
+      background-color: #FDFCF9;
+    }
+
+    /* Highlights and Accents */
+    .accent-block {
+      background-color: #FAF4E8;
+      border-left: 4px solid var(--primary-dark);
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 4px 4px 0;
+      font-style: italic;
+    }
+
+    /* Code Snippets */
+    pre {
+      background: #2E2A24;
+      color: #F1ECE4;
+      padding: 12px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 8.5pt;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+
+    code {
+      font-family: 'Consolas', monospace;
+      background: #F1EFE9;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 9pt;
+      color: #A0522D;
+    }
+
+    /* A4 CSS Printing Rules */
+    @media print {
+      body {
+        background-color: #FFFFFF;
+      }
+
+      .page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+        width: 210mm;
+        height: 297mm;
+      }
+
+      .cover-page {
+        background: var(--gold-bg) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .accent-block {
+        background-color: #FAF4E8 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .db-table th {
+        background-color: #F5ECE0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .figure-image-placeholder {
+        background-color: #FAF6EE !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-container">
+
+    <!-- PAGE 1: COVER PAGE -->
+    <div class="page cover-page" id="page-1">
+      <div>
+        <div
+          style="font-family: 'Outfit', sans-serif; font-size: 15pt; letter-spacing: 2px; text-transform: uppercase; color: #5C4A31; font-weight: 500;">
+          Project Report
+        </div>
+        <div style="width: 60px; height: 3px; background-color: #5C4A31; margin: 15px auto;"></div>
+      </div>
+
+      <div style="margin: 40px 0;">
+        <h1
+          style="font-size: 34pt; color: #000; font-family: 'Outfit', sans-serif; font-weight: 600; line-height: 1.1; margin-bottom: 10px;">
+          THREAD TRADE
+        </h1>
+        <div
+          style="font-family: 'Outfit', sans-serif; font-size: 16pt; color: #4B3B26; font-weight: 400; letter-spacing: 0.5px;">
+          Clothing Exchange & Swap Marketplace
+        </div>
+        <p
+          style="text-align: center; color: #6D5638; font-size: 11pt; margin-top: 15px; font-style: italic; max-width: 80%; margin-left: auto; margin-right: auto;">
+          A full-stack, real-time barter platform designed to encourage circular fashion and mitigate global textile
+          waste.
+        </p>
+      </div>
+
+      <div style="margin-top: 50px;">
+        <div style="font-size: 12pt; font-family: 'Outfit', sans-serif; margin-bottom: 25px; color: #2C2C2C;">
+          Created by:<br>
+          <strong style="font-size: 14pt; color: #000;">ANMOL SINGH</strong>
+        </div>
+
+        <div style="font-size: 11pt; font-family: 'Outfit', sans-serif; color: #4A3A25;">
+          Under the Guidance of:<br>
+          <strong style="color: #000; font-size: 12pt; text-transform: uppercase; letter-spacing: 0.5px;">Unified Mentor
+            Private Limited</strong>
+        </div>
+      </div>
+
+      <div style="font-size: 10pt; color: #5C4A31; font-family: 'Outfit', sans-serif; font-weight: 500;">
+        Academic Year: 2025-2026
+      </div>
+    </div>
+
+    <!-- PAGE 2: ACKNOWLEDGMENT -->
+    <div class="page" id="page-2">
+      <h2>Acknowledgment</h2>
+      <div style="margin-top: 30px;">
+        <p>
+          I would like to express my deepest gratitude to <strong>Unified Mentor Private Limited</strong> for providing
+          me with the opportunity to work on this socially relevant and technologically stimulating project. This
+          endeavor has allowed me to apply theoretical concepts of full-stack software development to a real-world
+          environmental and consumer challenge.
+        </p>
+        <p>
+          I am immensely grateful to my mentors and guides who provided invaluable feedback, technical reviews, and
+          strategic insights that helped shape the project architecture, database design, and interface experience.
+          Their guidance was pivotal in taking the application from an initial conceptual state to a fully functional,
+          containerized, and deployed solution.
+        </p>
+        <p>
+          I also wish to thank my peers and teammates who supported me with peer reviews, brainstorming sessions during
+          tricky implementation phases (particularly around real-time synchronization with WebSockets and geospatial
+          database indexing), and technical testing.
+        </p>
+        <p>
+          Finally, I want to thank my family and friends for their constant encouragement and patience during the late
+          nights spent debugging concurrent Express connections and building robust database models. This project is a
+          testament to their support.
+        </p>
+      </div>
+
+      <div style="margin-top: 150px; text-align: right; padding-right: 20px;">
+        <div style="font-family: 'Outfit', sans-serif; font-size: 12pt; font-weight: 500; color: #000;">
+          Anmol Singh
+        </div>
+        <div style="font-size: 10pt; color: var(--text-light);">
+          Lead Developer, Thread Trade Project
+        </div>
+      </div>
+
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 3: ABSTRACT -->
+    <div class="page" id="page-3">
+      <h2>Abstract</h2>
+      <div style="margin-top: 20px;">
+        <p>
+          The rise of the "fast fashion" business model over the past two decades has drastically shortened the
+          lifecycle of garments, driving a massive surge in textile production and consumption. Consequently, global
+          landfill sites are increasingly inundated with wearable clothing items, leading to severe environmental and
+          ecological distress. While consumer interest in sustainable fashion practices is growing, mainstream
+          e-commerce applications remain strictly transactional, focusing on commercial buying and selling. This
+          financial barrier limits circular economy participation.
+        </p>
+        <p>
+          <strong>Thread Trade</strong> is a full-stack, barter-first clothing exchange and swap marketplace built
+          specifically to bridge this gap. The platform enables users to directly upload and swap clothing items without
+          any monetary transactions, promoting a localized circular economy. Thread Trade utilizes a modern MERN stack
+          architecture (MongoDB, Express.js, React, Node.js) paired with WebSockets (Socket.IO) to handle high-frequency
+          interactions such as direct negotiation chat.
+        </p>
+        <p>
+          Key features of the platform include a <em>Geospatial Location-Based Matching System</em> which utilizes 2D
+          sphere indexes to help users find swap opportunities within walking distance, reducing logistics overhead.
+          Additionally, an algorithm-based <em>Swap Value Calculator</em> automatically analyzes clothing conditions,
+          brand tiering, and categories to suggest value-equitable matches. The application is integrated with
+          role-based access control, a comprehensive admin dashboard, Cloudinary media hosting, and audit logging to
+          ensure platform safety. This project report details the software engineering practices, architectural designs,
+          database structures, and system testing methods used to successfully build and deploy Thread Trade.
+        </p>
+      </div>
+      <div class="accent-block" style="margin-top: 40px;">
+        "By replacing the transactional currency model with direct clothing bartering, Thread Trade targets the source
+        of fast-fashion waste, giving clothes a second life and building a community around circular sustainability."
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 4: INDEXING (TABLE OF CONTENTS) -->
+    <div class="page" id="page-4">
+      <h2>Table of Contents</h2>
+      <table class="toc-table">
+        <tbody>
+          <tr>
+            <td><strong>Cover Page</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">1</td>
+          </tr>
+          <tr>
+            <td><strong>Acknowledgment</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">2</td>
+          </tr>
+          <tr>
+            <td><strong>Abstract</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">3</td>
+          </tr>
+          <tr>
+            <td><strong>Table of Contents (Indexing)</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">4</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 1: Introduction & Project Context</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">5</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 2: Problem Statement</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">6</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 3: Project Objectives</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">7</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 4: Scope of Work</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">8</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 5: Functional Requirements — User & Listing</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">9</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 6: Functional Requirements — Swap & Chat</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">10</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 7: Functional Requirements — Core Services & Admin</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">11</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 8: Non-Functional Requirements</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">12</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 9: Technology Stack & Technical Justifications</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">13</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 10: System Architecture & Data Flow</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">14</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 11: Backend Codebase Architecture</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">15</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 12: Frontend Codebase Architecture</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">16</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 13: Module Detail — Authentication Flow</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">17</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 14: Module Detail — Listing Management</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">18</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 15: Module Detail — Swap Negotiation & Sockets</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">19</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 16: Module Detail — Geospatial & Value Systems</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">20</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 17: Database Schema Design — Schemas Part I</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">21</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 18: Database Schema Design — Schemas Part II</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">22</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 19: API Reference — Authentication & Users</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">23</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 20: API Reference — Listings & Swap Requests</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">24</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 21: High-Level User & Admin flows</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">25</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 22: Web Portal Page Visuals — Fig 1 & Fig 2</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">26</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 23: Web Portal Page Visuals — Fig 3 & Fig 4</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">27</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 24: Web Portal Page Visuals — Fig 5 & Fig 6</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">28</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 25: Web Portal Page Visuals — Fig 7 & Fig 8</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">29</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 26: Project Verification & Testing Plan</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">30</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 27: Assumptions, Constraints, & KPIs</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">31</td>
+          </tr>
+          <tr>
+            <td><strong>Chapter 28: Environmental Impact & Conclusion</strong></td>
+            <td><span class="toc-dots"></span></td>
+            <td style="text-align: right;">32</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 5: INTRODUCTION -->
+    <div class="page" id="page-5">
+      <h2>Chapter 1: Introduction & Project Context</h2>
+      <div style="margin-top: 20px;">
+        <h3>The Rise of Fast Fashion and Its Impact</h3>
+        <p>
+          Over the past two decades, the global clothing industry has undergone a radical transformation. Driven by the
+          "fast fashion" model, clothing brands have transitioned from traditional seasonal collections to continuous
+          cycles of micro-seasons. Garments are manufactured cheaply, sold in high volumes, and discarded quickly.
+          According to environmental research, global clothing production has doubled since 2000, while the average
+          garment is worn less than ten times before disposal.
+        </p>
+        <p>
+          This pattern has triggered critical environmental consequences. The textile sector accounts for nearly 10% of
+          global carbon emissions and is a major source of water depletion and chemical pollution. Millions of tons of
+          garments are dumped annually into landfills or incinerated, even though a substantial portion of these clothes
+          remain in excellent, wearable condition.
+        </p>
+        <h3>Circular Fashion as the Solution</h3>
+        <p>
+          Sustainable fashion paradigms advocate for transition towards a circular economy where the lifecycle of
+          garments is extended. Many individuals possess high-quality clothing that they no longer wear due to changes
+          in personal style, fit, or preference. However, the friction involved in donating or selling items online—such
+          as listing management, complex pricing negotiations, and payment processing fees—prevents wide-scale
+          participation.
+        </p>
+        <p>
+          The <strong>Thread Trade</strong> project offers a digital alternative by creating an online environment
+          dedicated entirely to clothing bartering. Instead of purchasing new apparel, users list items they no longer
+          need and trade them directly for items owned by other community members, eliminating currency as a requirement
+          for transaction.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 6: PROBLEM STATEMENT -->
+    <div class="page" id="page-6">
+      <h2>Chapter 2: Problem Statement</h2>
+      <div style="margin-top: 20px;">
+        <p>
+          Despite growing public awareness of the negative impacts of fast fashion, several critical bottlenecks prevent
+          users from adopting sustainable alternatives. The primary challenges addressed by this project include:
+        </p>
+        <ul>
+          <li>
+            <strong>Inefficient Reuse Channels:</strong> Millions of people own wearable garments that sit unused in
+            wardrobes. There is no simple, standardized medium for matching these items directly with individuals who
+            would value and wear them.
+          </li>
+          <li>
+            <strong>E-Commerce Monopolization:</strong> Traditional online marketplaces are designed for monetary
+            commerce. Selling pre-owned garments involves paying platform commission fees, dealing with digital payment
+            configurations, and pricing disputes.
+          </li>
+          <li>
+            <strong>Complicated Valuations:</strong> Setting a fair price for used apparel is subjective. Users
+            frequently struggle with pricing their items, leading to listing abandonment or extended negotiation cycles.
+          </li>
+          <li>
+            <strong>Lack of Dedicated Swapping Platforms:</strong> Existing platforms that allow swaps treat it as an
+            afterthought. No mainstream application offers custom features tailored to swapping, such as value-based
+            matchmaking or double-blind swap proposals.
+          </li>
+          <li>
+            <strong>Logistical Friction and Carbon Footprint:</strong> Swapping clothes via long-distance shipping can
+            incur high carbon costs. Without location-based filtering, users are forced to pay for couriers even when
+            swap matches exist in their immediate neighborhood.
+          </li>
+        </ul>
+        <p>
+          Thread Trade resolves these friction points by implementing a dedicated web portal with built-in location
+          matching, a state-based swap proposal flow, and an automatic value evaluation engine.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 7: OBJECTIVES -->
+    <div class="page" id="page-7">
+      <h2>Chapter 3: Project Objectives</h2>
+      <div style="margin-top: 20px;">
+        <h3>Primary Objectives</h3>
+        <p>
+          The core focus of Thread Trade is to build a reliable and accessible ecosystem for clothing swapping. The
+          primary goals include:
+        </p>
+        <ol>
+          <li>
+            <strong>Create a Dedicated Swap Portal:</strong> Develop a full-stack web application that allows users to
+            upload, search, filter, and swap clothing items directly.
+          </li>
+          <li>
+            <strong>Implement Cashless Exchange:</strong> Build a swap proposal and agreement system that enables users
+            to complete peer-to-peer exchanges without mandatory digital payment transactions.
+          </li>
+          <li>
+            <strong>Enable Local Geospatial Matching:</strong> Incorporate map coordinate-based search to surface
+            clothing listings within a specific radius of the user, facilitating low-cost local handoffs.
+          </li>
+          <li>
+            <strong>Encourage Circular Economy:</strong> Build a sustainable community by providing clear statistics and
+            feedback loops that validate the user's role in textile waste reduction.
+          </li>
+        </ol>
+
+        <h3>Secondary Objectives</h3>
+        <ol>
+          <li>
+            <strong>Establish Real-Time Communication:</strong> Provide a direct negotiation chat room for swap
+            participants to clarify details, schedule meetings, or negotiate top-ups.
+          </li>
+          <li>
+            <strong>Incorporate a Value Fairness Calculator:</strong> Develop a database-driven valuation algorithm that
+            reviews listing parameters (brand, condition, category) to evaluate and display swap equity.
+          </li>
+          <li>
+            <strong>Implement Admin Moderation and Analytics:</strong> Build administrative controls to moderate users,
+            review flagged listings, and gather metrics.
+          </li>
+        </ol>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 8: SCOPE OF WORK -->
+    <div class="page" id="page-8">
+      <h2>Chapter 4: Scope of Work</h2>
+      <div style="margin-top: 20px;">
+        <h3>In-Scope (Phase 1 Implementation)</h3>
+        <p>
+          The initial release of the Thread Trade platform focuses on core functionality, establishing a complete user
+          experience for swapping clothes locally and negotiating trades. The components built in this phase are:
+        </p>
+        <ul>
+          <li><strong>User Management:</strong> Registration, JWT authentication, persistent session cookies, user
+            profiles with rating feedback.</li>
+          <li><strong>Listing System:</strong> Image uploads (integrated with Cloudinary), categories, brand tracking,
+            size definition, condition metrics, and text search.</li>
+          <li><strong>Swap Request Engine:</strong> Multi-state transaction system (Pending, Accepted, Rejected,
+            Cancelled, Completed) with automatic status locking.</li>
+          <li><strong>Negotiation Chat:</strong> Live messaging over WebSockets with visual indicators for online
+            status, typing states, and read receipts.</li>
+          <li><strong>Swap Calculator:</strong> Backend utility calculating item values and analyzing fair trades within
+            a 15% range.</li>
+          <li><strong>Geospatial Engine:</strong> Location-based filtering using MongoDB 2dsphere indexes for nearby
+            swaps.</li>
+          <li><strong>Admin Dashboard:</strong> Moderation panel for resolving reports, managing listings, and logging
+            database audit traces.</li>
+        </ul>
+
+        <h3>Out-of-Scope (Future Phases)</h3>
+        <p>
+          The following features are excluded from Phase 1 to focus on core transactional stability:
+        </p>
+        <ul>
+          <li>Integration of credit card payment gateways for listing promotions.</li>
+          <li>AI-based neural networks for automated fashion recommendations.</li>
+          <li>Augmented Reality (AR) virtual try-on using webcam devices.</li>
+          <li>Mobile applications (iOS and Android native wrappers).</li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 9: FUNCTIONAL REQUIREMENTS - USER & LISTING -->
+    <div class="page" id="page-9">
+      <h2>Chapter 5: Functional Requirements</h2>
+      <div style="margin-top: 15px;">
+        <h3>5.1 User Management Module</h3>
+        <p>
+          The User Management module governs access controls, credential security, profiles, and historical swap
+          records. Detailed functional requirements are:
+        </p>
+        <ul>
+          <li>
+            <strong>Registration & Authentication:</strong> Users must register with a unique email address, name, city,
+            state, and a password containing at least 8 characters. The system must hash passwords before database
+            storage and issue secure, short-lived JSON Web Tokens (JWT) along with long-lived refresh cookies.
+          </li>
+          <li>
+            <strong>Profile Management:</strong> Registered users can update their profile information, upload an avatar
+            image, write a brief biography, and view their aggregate ratings calculated from post-swap reviews.
+          </li>
+          <li>
+            <strong>Personal Dashboard:</strong> The user dashboard acts as a central control panel showing a user's
+            uploaded listings, active swap requests (both incoming and outgoing), and historic swap transactions.
+          </li>
+        </ul>
+
+        <h3>5.2 Clothing Listing Module</h3>
+        <p>
+          The Listing module manages the metadata, images, and lifecycle of individual garments offered for swap.
+          Requirements include:
+        </p>
+        <ul>
+          <li>
+            <strong>Listing Creation:</strong> Users must specify clothing category (e.g. Shirt, Jacket), brand (or mark
+            as Unbranded), size, target gender, item condition, description, estimated value, and upload at least one
+            image.
+          </li>
+          <li>
+            <strong>Status Management:</strong> The listing status must transition through specific lifecycle phases:
+            <code>Available</code>, <code>Pending</code> (when locked in a pending swap), <code>Swapped</code>
+            (completed transaction), or <code>Removed</code> (soft-deleted by user or admin).
+          </li>
+          <li>
+            <strong>Search and Filter:</strong> Users can run text searches matching titles or descriptions, filtered by
+            category, size, condition, and geographic range.
+          </li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 10: FUNCTIONAL REQUIREMENTS - SWAP & CHAT -->
+    <div class="page" id="page-10">
+      <h2>Chapter 5: Functional Requirements (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>5.3 Swap Request Module</h3>
+        <p>
+          The Swap Request module manages proposals, status tracking, and rules governing peer-to-peer exchanges:
+        </p>
+        <ul>
+          <li>
+            <strong>Proposal Logic:</strong> A user (Sender) can select an item owned by another user (Receiver) and
+            propose a swap. The Sender must offer one of their own <code>Available</code> items in exchange. The system
+            records the estimated values of both items at the time of creation.
+          </li>
+          <li>
+            <strong>Optional Cash Top-Up:</strong> If the offered item has a lower estimated value than the wanted item,
+            the Sender can offer a cash difference to balance the swap.
+          </li>
+          <li>
+            <strong>State Machine Constraints:</strong> When a request is created, both items must automatically lock,
+            changing status to <code>Pending</code> to prevent them from being offered in other swaps. If accepted, the
+            swap remains active. If rejected or cancelled, the items must immediately revert to <code>Available</code>.
+          </li>
+          <li>
+            <strong>Completion and Reviews:</strong> Once the exchange takes place, either participant can mark the swap
+            as <code>Completed</code>, which changes the items' statuses to <code>Swapped</code> and triggers review
+            prompts.
+          </li>
+        </ul>
+
+        <h3>5.4 Negotiation Chat Module</h3>
+        <p>
+          The Chat module enables communication between swap participants within a secure, authenticated channel:
+        </p>
+        <ul>
+          <li>
+            <strong>Channel Creation:</strong> A chat channel is automatically created when a swap request is generated,
+            linking the two participants.
+          </li>
+          <li>
+            <strong>Real-Time Delivery:</strong> Messages must be transmitted instantly using WebSocket gateways. Users
+            must receive notifications if they are active on the site but outside the chat screen.
+          </li>
+          <li>
+            <strong>State Syncing:</strong> The chat must show typing indicators, user online states, and "read"
+            receipts to facilitate active negotiation.
+          </li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 11: FUNCTIONAL REQUIREMENTS - SERVICES & ADMIN -->
+    <div class="page" id="page-11">
+      <h2>Chapter 5: Functional Requirements (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>5.5 Swap Value Calculator Service</h3>
+        <p>
+          The valuation calculator operates as an automated service to evaluate swap fairness:
+        </p>
+        <ul>
+          <li>
+            <strong>Fairness Validation:</strong> The service calculates if the absolute difference between the wanted
+            item's value and the combined value of the offered item and cash top-up falls within a threshold. The
+            threshold is defined as 15% of the wanted item's value or ₹150, whichever is larger.
+          </li>
+          <li>
+            <strong>Visual Indicators:</strong> The frontend must display a real-time rating of the match (e.g., "Fair
+            Match", "Value Mismatch") to assist users during swap creation and acceptance.
+          </li>
+        </ul>
+
+        <h3>5.6 Location-Based Matching Service</h3>
+        <p>
+          This service manages geospatial features for localizing trade opportunities:
+        </p>
+        <ul>
+          <li>
+            <strong>Geospatial Querying:</strong> The system must map city/state inputs to longitudinal and latitudinal
+            coordinates, storing them in GeoJSON format.
+          </li>
+          <li>
+            <strong>Nearby Feed:</strong> The Browse page must allow users to sort listings by distance and display
+            listings within walking distance, minimizing delivery overhead.
+          </li>
+        </ul>
+
+        <h3>5.7 Admin Moderation Module</h3>
+        <p>
+          The administrative portal provides tools for moderation and platform oversight:
+        </p>
+        <ul>
+          <li>
+            <strong>Moderation Controls:</strong> Admins can block users violating terms, delete flagged listings, and
+            track platform metrics (active users, total listings, completed swaps).
+          </li>
+          <li>
+            <strong>Audit Logging:</strong> Every admin action must generate a non-modifiable audit trail recording the
+            admin ID, action performed, target collection, and timestamp.
+          </li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 12: NON-FUNCTIONAL REQUIREMENTS -->
+    <div class="page" id="page-12">
+      <h2>Chapter 6: Non-Functional Requirements</h2>
+      <div style="margin-top: 20px;">
+        <p>
+          Non-functional requirements specify the technical constraints, quality standards, and security controls built
+          into the Thread Trade architecture:
+        </p>
+        <ul>
+          <li>
+            <strong>Security & Authentication:</strong> Passwords must be hashed using the bcrypt algorithm with a work
+            factor of 12. Session security is maintained via double-token JWT authentication: access tokens are kept in
+            React memory (preventing XSS access) and refresh tokens are stored in HTTP-Only, SameSite cookies scoped to
+            the auth route (mitigating CSRF).
+          </li>
+          <li>
+            <strong>Performance and Responsiveness:</strong> Database indexes (including text indexes for search,
+            compound indexes for filters, and 2dsphere indexes for location queries) must ensure that queries resolve in
+            under 100ms.
+          </li>
+          <li>
+            <strong>Data Integrity & Concurrency:</strong> Mongoose transaction-like hooks must handle listing state
+            changes. For example, if a swap is accepted, all other pending swap requests involving those same items must
+            be automatically declined, and the items must lock immediately.
+          </li>
+          <li>
+            <strong>Scalability:</strong> The backend is designed statelessly to support horizontal scaling across cloud
+            instances (Vercel/Render). Database storage uses MongoDB Atlas, providing automatic sharding and
+            replication.
+          </li>
+          <li>
+            <strong>Mobile Responsiveness:</strong> The frontend must adapt dynamically to all device sizes (mobile,
+            tablet, desktop) using mobile-first CSS grids and flexible Tailwind containers.
+          </li>
+          <li>
+            <strong>Privacy Protection:</strong> Exact GPS coordinates are never exposed directly to other users. The
+            location index is used only for distance search, showing city and state details on profiles.
+          </li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 13: TECHNOLOGY STACK -->
+    <div class="page" id="page-13">
+      <h2>Chapter 7: Technology Stack & Justification</h2>
+      <div style="margin-top: 20px;">
+        <p>
+          Thread Trade leverages a modern web stack to achieve development velocity, horizontal scalability, and
+          real-time execution capability:
+        </p>
+        <ul>
+          <li>
+            <strong>Frontend: React.js (v18) & Vite:</strong> React's component-driven architecture enables reuse of UI
+            components like Listing Cards and Dashboard tabs. Vite is selected over Create-React-App for its fast Hot
+            Module Replacement (HMR) and optimized rollup build system.
+          </li>
+          <li>
+            <strong>Styling: Tailwind CSS & PostCSS:</strong> Tailwind's utility-first framework keeps the style system
+            standardized. It allows rapid prototyping of interfaces, responsive layout adjustments, and dark mode
+            configuration.
+          </li>
+          <li>
+            <strong>Backend: Node.js & Express.js:</strong> Express.js provides a clean routing layer for the REST API.
+            Node's event-driven, non-blocking I/O model handles high numbers of concurrent users, which is essential for
+            chat routing.
+          </li>
+          <li>
+            <strong>Database: MongoDB & Mongoose:</strong> MongoDB's document-oriented model aligns with clothing data
+            structures (variable attributes like sizes, brands, and tags). Mongoose provides schema validation and
+            geospatial query capabilities.
+          </li>
+          <li>
+            <strong>Real-time Layer: Socket.IO:</strong> Built on top of WebSockets, Socket.IO provides fallback
+            polling, automatic reconnection, and namespace isolation, making it suitable for direct messaging.
+          </li>
+          <li>
+            <strong>Media Storage: Cloudinary:</strong> Used for image hosting. It automatically compresses and resizes
+            uploaded garment images, reducing frontend load times.
+          </li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 14: SYSTEM ARCHITECTURE & DATA FLOW -->
+    <div class="page" id="page-14">
+      <h2>Chapter 8: System Architecture & Data Flow</h2>
+      <div style="margin-top: 15px;">
+        <p>
+          Thread Trade uses a classic client-server architecture with decoupling between the presentation layer (React
+          SPA) and the logical engine (Express REST API + Socket.IO Server). Data is stored in a centralized MongoDB
+          database.
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            graph TD
+            Client[React SPA Client] -->|REST APIs: HTTPS| Express[Express Server]
+            Client -->|WebSockets: WS| SocketIO[Socket.IO Gateway]
+            Express -->|Mongoose ODM| Mongo[(MongoDB Atlas)]
+            SocketIO -->|Session Synced| Express
+            Express -->|Media Streams| Cloudinary[Cloudinary CDN]
+            Express -->|Notifications| SocketIO
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 9: System Block Diagram showing frontend, API, socket, and storage components.
+        </div>
+        <p style="margin-top: 15px;">
+          The backend maintains statelessness. User authentication details are encoded into JSON Web Tokens, enabling
+          any node in a load-balanced cluster to verify requests without querying a session table. Media streams are
+          directed to Cloudinary, ensuring the backend server is not slowed down by file transfer tasks.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 15: BACKEND CODEBASE ARCHITECTURE -->
+    <div class="page" id="page-15">
+      <h2>Chapter 9: Backend Codebase Architecture</h2>
+      <div style="margin-top: 15px;">
+        <p>
+          The backend codebase is organized around separation of concerns, dividing routes, controller logic, schema
+          models, database connections, socket gateways, and utility functions into distinct modules.
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            graph LR
+            Server[server.js] --> App[src/app.js]
+            App --> Routes[src/routes/]
+            Routes --> Controllers[src/controllers/]
+            Controllers --> Models[src/models/]
+            Controllers --> Sockets[src/sockets/]
+            Controllers --> Config[src/config/]
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 10: Backend Directory dependency graph.
+        </div>
+        <p style="margin-top: 15px;">
+          The entrypoint of the application is <code>server.js</code>, which configures the HTTP server and attaches the
+          Socket.IO server. Standard middleware configurations (helmet, cors, morgan, express-mongo-sanitize) are
+          configured in <code>src/app.js</code>, which then forwards incoming requests to the respective routers under
+          <code>src/routes/</code>.
+        </p>
+        <p>
+          Business operations are housed within controllers, ensuring routers only serve as mapping filters. Database
+          validations are checked using Mongoose schemas in the models folder, while API parameters are validated using
+          Zod.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 16: FRONTEND CODEBASE ARCHITECTURE -->
+    <div class="page" id="page-16">
+      <h2>Chapter 10: Frontend Codebase Architecture</h2>
+      <div style="margin-top: 15px;">
+        <p>
+          The frontend is structured as a React Single Page Application (SPA), compiling assets with Vite and utilizing
+          React Router DOM for routing.
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            graph TD
+            App[App.jsx] --> AuthCtx[AuthContext.jsx]
+            AuthCtx --> Router[AppRouter]
+            Router --> Routes[routes/ Guards]
+            Router --> Pages[pages/ Components]
+            Pages --> Components[components/ Components]
+            Pages --> Services[api/ Axios Instance]
+            Pages --> SocketHook[hooks/useSocket]
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 11: Frontend Architecture layout.
+        </div>
+        <p style="margin-top: 15px;">
+          The <code>AuthContext.jsx</code> wraps the component tree, providing session management to all child nodes.
+          Access is governed by route guards (<code>ProtectedRoute.jsx</code> and <code>AdminRoute.jsx</code>). All
+          outgoing HTTP calls use a centralized Axios instance that intercepts responses to rotate expired JWT tokens
+          automatically. Real-time events are bound directly through the custom <code>useSocket.js</code> hook.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 17: MODULE DETAIL - AUTHENTICATION FLOW -->
+    <div class="page" id="page-17">
+      <h2>Chapter 11: Module Detail — Authentication Flow</h2>
+      <div style="margin-top: 15px;">
+        <h3>Security Architecture</h3>
+        <p>
+          To maintain security, Thread Trade uses a hybrid JWT scheme. The login flow establishes access permissions
+          without exposing credentials:
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            sequenceDiagram
+            participant Client as React Client
+            participant API as Express API
+            participant DB as MongoDB
+            Client->>API: POST /api/auth/login (email, password)
+            API->>DB: Find User (select: +password)
+            DB-->>API: User details + hashed password
+            API->>API: Compare bcrypt Hash
+            Note right of API: If match, sign tokens
+            API->>Client: Send HTTPOnly Cookie (Refresh Token)
+            API->>Client: Send Access Token (JSON body)
+            Client->>Client: Save Access Token in state
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 12: Secure authentication login sequence diagram.
+        </div>
+        <p style="margin-top: 15px;">
+          This authentication flow mitigates risks: if a malicious script tries to parse storage keys, it cannot find
+          the long-lived refresh token since it is stored as an HTTP-only cookie. The short-lived access token is stored
+          in memory, limiting its exposure window.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 18: MODULE DETAIL - LISTING MANAGEMENT -->
+    <div class="page" id="page-18">
+      <h2>Chapter 12: Module Detail — Listing Management</h2>
+      <div style="margin-top: 15px;">
+        <h3>Garment Creation & Media Pipeline</h3>
+        <p>
+          Managing apparel listings involves coordinate lookup, validation, and media compression:
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            graph TD
+            UI[Listing Form] -->|Validates Schema| Form[FormData Object]
+            Form -->|POST Request| Router[listingRoutes.js]
+            Router -->|Multer Middleware| Cloud[Cloudinary Engine]
+            Cloud -->|Saves Image & Returns URL| Controller[listingController.js]
+            Controller -->|Geospatial Lookup| Coordinates[Coordinates Resolver]
+            Coordinates -->|Writes MongoDB Document| DB[(MongoDB)]
+            DB -->|Listing Created| UI
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 13: Listing creation architecture pipeline.
+        </div>
+        <p style="margin-top: 15px;">
+          When a user creates a listing, the Multer middleware intercepts the file buffer and streams it to the
+          Cloudinary CDN. The CDN compresses the file, generates a web-optimized asset, and returns a secure URL and
+          unique identifier to the controller. The controller combines this information with location details before
+          writing to the database.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 19: MODULE DETAIL - SWAP NEGOTIATION -->
+    <div class="page" id="page-19">
+      <h2>Chapter 13: Module Detail — Swap Negotiation</h2>
+      <div style="margin-top: 15px;">
+        <h3>Real-time Socket Negotiation System</h3>
+        <p>
+          Once a swap request is generated, a negotiation space is created. Chat interactions utilize WebSockets to
+          enable real-time messaging:
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            sequenceDiagram
+            participant UserA as Sender (User A)
+            participant Socket as Socket.IO Server
+            participant UserB as Receiver (User B)
+            participant DB as MongoDB
+            UserA->>Socket: joinRoom(swapId)
+            UserB->>Socket: joinRoom(swapId)
+            UserA->>Socket: sendMessage(text)
+            Socket->>DB: Write Message Model
+            DB-->>Socket: Message Saved
+            Socket->>UserB: incomingMessage(text)
+            Socket->>UserA: messageDelivered()
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 14: WebSocket chat sequence and delivery diagram.
+        </div>
+        <p style="margin-top: 15px;">
+          This connection uses a persistent TCP socket, bypassing the overhead of HTTP requests. Rooms are partitioned
+          using the unique swap request ID, isolating communications to the involved swap participants.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 20: MODULE DETAIL - GEOSPATIAL & VALUE SYSTEMS -->
+    <div class="page" id="page-20">
+      <h2>Chapter 14: Module Detail — Geospatial & Value Systems</h2>
+      <div style="margin-top: 15px;">
+        <h3>Swap Value Fairness Calculator</h3>
+        <p>
+          The algorithm checks swap fairness based on parameters stored in the Listing schemas:
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            graph TD
+            ValWanted[Wanted Item Value] --> Diff[Calculate Absolute Difference]
+            ValOffered[Offered Item Value] --> Diff
+            CashTop[Cash Top-Up Value] --> Diff
+            ValWanted --> Thresh[Calculate Threshold: Max 150 or 15% of Wanted]
+            Diff --> Compare{Is Difference <= Threshold?} Thresh --> Compare
+              Compare -->|Yes| Fair[Return fairMatch: true]
+              Compare -->|No| Unfair[Return fairMatch: false]
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 15: Valuation fairness algorithm flow.
+        </div>
+        <h3>Geospatial Query Pipeline</h3>
+        <p>
+          Location queries use MongoDB's geospatial indices:
+        </p>
+        <pre><code>// GeoJSON $near query execution
+const listings = await Listing.find({
+  "location.coordinates": {
+    $near: {
+      $geometry: { type: "Point", coordinates: [lng, lat] },
+      $maxDistance: maxDistanceInMeters
+    }
+  },
+  status: "Available"
+});</code></pre>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 21: DATABASE SCHEMA DESIGN - SCHEMAS PART I -->
+    <div class="page" id="page-21">
+      <h2>Chapter 15: Database Schema Design</h2>
+      <div style="margin-top: 15px;">
+        <h3>15.1 User Schema Definition</h3>
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Data Type</th>
+              <th>Validation / Reference</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>_id</td>
+              <td>ObjectId</td>
+              <td>Primary Key (Auto-generated)</td>
+              <td>Unique User ID</td>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td>String</td>
+              <td>Required, max: 80 chars</td>
+              <td>Display name</td>
+            </tr>
+            <tr>
+              <td>email</td>
+              <td>String</td>
+              <td>Required, Unique, Lowercase</td>
+              <td>Login credential</td>
+            </tr>
+            <tr>
+              <td>password</td>
+              <td>String</td>
+              <td>Required, select: false</td>
+              <td>Bcrypt hashed password</td>
+            </tr>
+            <tr>
+              <td>role</td>
+              <td>String</td>
+              <td>Enum ['user', 'admin']</td>
+              <td>Access control level</td>
+            </tr>
+            <tr>
+              <td>location.city</td>
+              <td>String</td>
+              <td>Trimmed</td>
+              <td>City name</td>
+            </tr>
+            <tr>
+              <td>location.state</td>
+              <td>String</td>
+              <td>Trimmed</td>
+              <td>State name</td>
+            </tr>
+            <tr>
+              <td>location.coordinates</td>
+              <td>2dsphere Point</td>
+              <td>[lng, lat] coordinates</td>
+              <td>Geospatial queries</td>
+            </tr>
+            <tr>
+              <td>wishlist</td>
+              <td>Array of ObjectIds</td>
+              <td>Reference: Listing model</td>
+              <td>Saved garments</td>
+            </tr>
+            <tr>
+              <td>ratingAverage</td>
+              <td>Number</td>
+              <td>Default: 0, scale: 0-5</td>
+              <td>Feedback score</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>15.2 Listing Schema Definition</h3>
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Data Type</th>
+              <th>Validation / Reference</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>_id</td>
+              <td>ObjectId</td>
+              <td>Primary Key (Auto-generated)</td>
+              <td>Unique Listing ID</td>
+            </tr>
+            <tr>
+              <td>owner</td>
+              <td>ObjectId</td>
+              <td>Reference: User (Required)</td>
+              <td>Listing creator link</td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td>String</td>
+              <td>Required, max: 120 chars</td>
+              <td>Listing headline</td>
+            </tr>
+            <tr>
+              <td>description</td>
+              <td>String</td>
+              <td>Required, max: 1000 chars</td>
+              <td>Detailed description</td>
+            </tr>
+            <tr>
+              <td>category</td>
+              <td>String</td>
+              <td>Enum ['Shirt', 'Dress', 'Jacket'...]</td>
+              <td>Item classification</td>
+            </tr>
+            <tr>
+              <td>brand</td>
+              <td>String</td>
+              <td>Default: 'Unbranded'</td>
+              <td>Manufacturer name</td>
+            </tr>
+            <tr>
+              <td>size</td>
+              <td>String</td>
+              <td>Required, trimmed</td>
+              <td>Garment size tag</td>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td>String</td>
+              <td>Enum ['New with tags', 'Like New'...]</td>
+              <td>Physical condition</td>
+            </tr>
+            <tr>
+              <td>estimatedValue</td>
+              <td>Number</td>
+              <td>Required, min: 0</td>
+              <td>Algorithmic cost value</td>
+            </tr>
+            <tr>
+              <td>status</td>
+              <td>String</td>
+              <td>Enum ['Available', 'Pending'...]</td>
+              <td>Item lifecycle status</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 22: DATABASE SCHEMA DESIGN - SCHEMAS PART II -->
+    <div class="page" id="page-22">
+      <h2>Chapter 15: Database Schema Design (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>15.3 SwapRequest Schema Definition</h3>
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Data Type</th>
+              <th>Validation / Reference</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>_id</td>
+              <td>ObjectId</td>
+              <td>Primary Key</td>
+              <td>Unique proposal ID</td>
+            </tr>
+            <tr>
+              <td>fromUser</td>
+              <td>ObjectId</td>
+              <td>Ref: User, Indexed</td>
+              <td>Request sender</td>
+            </tr>
+            <tr>
+              <td>toUser</td>
+              <td>ObjectId</td>
+              <td>Ref: User, Indexed</td>
+              <td>Request receiver</td>
+            </tr>
+            <tr>
+              <td>itemOffered</td>
+              <td>ObjectId</td>
+              <td>Ref: Listing, Required</td>
+              <td>Sender's garment</td>
+            </tr>
+            <tr>
+              <td>itemWanted</td>
+              <td>ObjectId</td>
+              <td>Ref: Listing, Required</td>
+              <td>Receiver's garment</td>
+            </tr>
+            <tr>
+              <td>valueOffered</td>
+              <td>Number</td>
+              <td>Snapshot value</td>
+              <td>Value of offered item</td>
+            </tr>
+            <tr>
+              <td>valueWanted</td>
+              <td>Number</td>
+              <td>Snapshot value</td>
+              <td>Value of wanted item</td>
+            </tr>
+            <tr>
+              <td>cashTopUp</td>
+              <td>Number</td>
+              <td>Default: 0</td>
+              <td>Additional cash offered</td>
+            </tr>
+            <tr>
+              <td>status</td>
+              <td>String</td>
+              <td>Enum ['pending', 'accepted'...]</td>
+              <td>Swap status</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>15.4 Message Schema Definition</h3>
+        <table class="db-table">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Data Type</th>
+              <th>Validation</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>_id</td>
+              <td>ObjectId</td>
+              <td>Primary Key</td>
+              <td>Unique message identifier</td>
+            </tr>
+            <tr>
+              <td>swapRequest</td>
+              <td>ObjectId</td>
+              <td>Ref: SwapRequest, Required</td>
+              <td>Associated swap ID</td>
+            </tr>
+            <tr>
+              <td>sender</td>
+              <td>ObjectId</td>
+              <td>Ref: User, Required</td>
+              <td>Sender of message</td>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>String</td>
+              <td>Required, trimmed</td>
+              <td>Message body text</td>
+            </tr>
+            <tr>
+              <td>isRead</td>
+              <td>Boolean</td>
+              <td>Default: false</td>
+              <td>Read receipt flag</td>
+            </tr>
+            <tr>
+              <td>createdAt</td>
+              <td>Date</td>
+              <td>Timestamp</td>
+              <td>Message sending time</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 23: API REFERENCE - AUTHENTICATION & USERS -->
+    <div class="page" id="page-23">
+      <h2>Chapter 16: API Endpoint Documentation</h2>
+      <div style="margin-top: 15px;">
+        <h3>16.1 Authentication API Endpoints</h3>
+
+        <h4>POST /api/auth/register</h4>
+        <p style="font-size: 9.5pt; margin-bottom: 5px;"><strong>Description:</strong> Registers a new user on the
+          platform, hashing the password and initializing location coordinates.</p>
+        <pre><code>// Request Body
+{
+  "name": "Ananya Rao",
+  "email": "ananya@example.com",
+  "password": "Swap_123",
+  "location": { "city": "Varanasi", "state": "Uttar Pradesh" }
+}
+// Response Status: 201 Created</code></pre>
+
+        <h4>POST /api/auth/login</h4>
+        <p style="font-size: 9.5pt; margin-bottom: 5px;"><strong>Description:</strong> Authenticates credentials, signs
+          JWT, and returns an HTTPOnly refresh cookie.</p>
+        <pre><code>// Response Body
+{
+  "success": true,
+  "accessToken": "eyJhbGciOiJIUzI1NiIsIn...",
+  "user": { "id": "60d5ec...", "name": "Ananya Rao", "role": "user" }
+}
+// Response Status: 200 OK</code></pre>
+
+        <h4>POST /api/auth/refresh</h4>
+        <p style="font-size: 9.5pt; margin-bottom: 5px;"><strong>Description:</strong> Refreshes the short-lived access
+          token using the HTTPOnly refresh token cookie.</p>
+        <pre><code>// Response Status: 200 OK / 401 Unauthorized (if cookie expired)</code></pre>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 24: API REFERENCE - LISTINGS & SWAPS -->
+    <div class="page" id="page-24">
+      <h2>Chapter 16: API Endpoint Documentation (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>16.2 Clothing Listings API Endpoints</h3>
+
+        <h4>GET /api/listings</h4>
+        <p style="font-size: 9.5pt; margin-bottom: 5px;"><strong>Description:</strong> Returns active listings with
+          support for search, pagination, category filtering, and location queries.</p>
+        <pre><code>// URL Query Parameters: ?search=formal&category=Shirt&near=true
+// Response Status: 200 OK</code></pre>
+
+        <h4>POST /api/listings</h4>
+        <p style="font-size: 9.5pt; margin-bottom: 5px;"><strong>Description:</strong> Creates a new clothing listing.
+          Requires JWT authorization header and handles multipart form data for image upload.</p>
+        <pre><code>// Authorization: Bearer <accessToken>
+// Form Data: title, description, category, size, condition, estimatedValue, images (file)
+// Response Status: 201 Created</code></pre>
+
+        <h3>16.3 Swap Request Endpoints</h3>
+
+        <h4>POST /api/swaps</h4>
+        <p style="font-size: 9.5pt; margin-bottom: 5px;"><strong>Description:</strong> Proposes a swap, locks the items,
+          and notifies the target user.</p>
+        <pre><code>// Request Body
+{
+  "itemOffered": "66a8cf12...",
+  "itemWanted": "66a8cf50...",
+  "cashTopUp": 150,
+  "note": "Let's trade this weekend!"
+}
+// Response Status: 201 Created</code></pre>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 25: HIGH-LEVEL USER & ADMIN FLOWS -->
+    <div class="page" id="page-25">
+      <h2>Chapter 17: High-Level User & Admin Flows</h2>
+      <div style="margin-top: 15px;">
+        <h3>17.1 User Transaction Flow</h3>
+        <p>
+          The standard user flow from login to swap completion follows a structured state lifecycle:
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            stateDiagram-v2
+            [*] --> Unauthenticated: Visit Website
+            Unauthenticated --> Authenticated: Register or Login
+            Authenticated --> Browser: Browse Listings
+            Browser --> Propose: Choose Item & Propose Swap
+            Propose --> Pending: Lock Items (Status: Pending)
+            Pending --> Chat: Negotiate in Direct Chat
+            Chat --> Accepted: Receiver Accepts Request
+            Chat --> Rejected: Receiver Rejects (Unlock Items)
+            Accepted --> Completed: Handover & Mark Complete
+            Completed --> Swapped: Lock Items (Status: Swapped)
+            Completed --> Review: Leave Feedback & Star Rating
+            Swapped --> [*]
+          </div>
+        </div>
+        <div
+          style="font-size: 8.5pt; text-align: center; margin-top: 5px; color: var(--text-light); font-family: 'Outfit';">
+          Fig 16: User transaction state lifecycle.
+        </div>
+        <h3>17.2 Administrative Verification Flow</h3>
+        <p>
+          Administrators use the moderation panel to resolve disputes, review flags, and audit system operations:
+        </p>
+        <div class="mermaid-box">
+          <div class="mermaid">
+            graph LR
+            Flagged[Flagged Listing] --> AdminReview{Admin Reviews}
+            AdminReview -->|Inappropriate| Delete[Delete listing & flag user]
+            AdminReview -->|Safe| Release[Clear flag status]
+            Delete --> Audit[Log Action to AuditLogs]
+            Release --> Audit
+          </div>
+        </div>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 26: WEB PORTAL VISUALS PART I -->
+    <div class="page" id="page-26">
+      <h2>Chapter 18: Web Portal Page Visuals</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.1 Login Interface</h3>
+        <p>
+          The Login portal provides access controls with client-side credential verification. The page displays the
+          brand values and leads users to registration.
+        </p>
+
+        <div class="figure-box">
+          <img src="login_page.png" alt="Login Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[login_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 1: Login Page interface for user authentication.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          The interface is styled with input validation that provides immediate error feedback to prevent
+          unauthenticated database requests.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 27: WEB PORTAL VISUALS PART II -->
+    <div class="page" id="page-27">
+      <h2>Chapter 18: Web Portal Page Visuals (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.2 Registration Interface</h3>
+        <p>
+          The Registration form captures mandatory user details, city/state attributes, and coordinates to configure
+          geospatial proximity matching.
+        </p>
+
+        <div class="figure-box">
+          <img src="register_page.png" alt="Register Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[register_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 2: Register Page containing fields for credentials and location parameters.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          City and state fields are processed to extract GPS coordinates, which are indexed in MongoDB using a 2dsphere
+          index.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 28: WEB PORTAL VISUALS PART III -->
+    <div class="page" id="page-28">
+      <h2>Chapter 18: Web Portal Page Visuals (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.3 Browse Listings Interface</h3>
+        <p>
+          The Browse page displays available listings, organized in a responsive grid. Users can search by keyword and
+          filter by category, condition, size, and distance.
+        </p>
+
+        <div class="figure-box">
+          <img src="browse_listings_page.png" alt="Browse Listings Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[browse_listings_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 3: Browse page showing clothing cards and proximity-based sorting options.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          Each card displays the brand, category, condition, estimated value, and location. Listings locked in pending
+          swaps are automatically hidden.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 29: WEB PORTAL VISUALS PART IV -->
+    <div class="page" id="page-29">
+      <h2>Chapter 18: Web Portal Page Visuals (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.4 Item Detail Interface</h3>
+        <p>
+          This interface displays detail view of individual items, detailing size, condition, owner information, and
+          swap availability status.
+        </p>
+
+        <div class="figure-box">
+          <img src="item_detail_page.png" alt="Item Detail Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[item_detail_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 4: Item Detail page containing specifications and a direct "Propose Swap" button.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          This page displays description details, tags, and reviews of the owner. If the item belongs to another user, a
+          "Propose Swap" option is made active.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 30: WEB PORTAL VISUALS PART V -->
+    <div class="page" id="page-30">
+      <h2>Chapter 18: Web Portal Page Visuals (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.5 Propose Swap Interface</h3>
+        <p>
+          This portal allows users to configure a swap request. Users select their offered item and set any top-up
+          adjustments while the value calculator checks the fairness ratio.
+        </p>
+
+        <div class="figure-box">
+          <img src="propose_swap_page.png" alt="Propose Swap Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[propose_swap_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 5: Swap Proposal panel showing value indicators and cash adjustment inputs.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          As users adjust the cash top-up, the system recalculates and updates the fairness tag ("Fair Match" vs "Value
+          Mismatch") to help users align expectations.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 31: WEB PORTAL VISUALS PART VI -->
+    <div class="page" id="page-31">
+      <h2>Chapter 18: Web Portal Page Visuals (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.6 Direct Message Chat Interface</h3>
+        <p>
+          The Negotiation Chat page provides a real-time communication space for swap participants to negotiate terms,
+          ask questions, or coordinate logistics.
+        </p>
+
+        <div class="figure-box">
+          <img src="chat_negotiation_page.png" alt="Chat Negotiation Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[chat_negotiation_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 6: Negotiation page with live chat, swap parameters, and status controls.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          The page displays messages in real-time, side-by-side with the swap request details, allowing users to modify
+          or complete the swap without leaving the chat.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 32: WEB PORTAL VISUALS PART VII -->
+    <div class="page" id="page-32">
+      <h2>Chapter 18: Web Portal Page Visuals (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.7 User Dashboard Interface</h3>
+        <p>
+          The User Dashboard provides controls for managing listing inventories, editing profiles, and tracking the
+          status of sent and received requests.
+        </p>
+
+        <div class="figure-box">
+          <img src="user_dashboard_page.png" alt="User Dashboard Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[user_dashboard_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 7: User Dashboard showing personal listings and incoming swap requests.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          Tabs organize listings by availability. Incoming requests display comparison details, allowing users to accept
+          or decline trades directly from the dashboard.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 33: WEB PORTAL VISUALS PART VIII -->
+    <div class="page" id="page-33">
+      <h2>Chapter 18: Web Portal Page Visuals (Cont.)</h2>
+      <div style="margin-top: 15px;">
+        <h3>18.8 Admin Moderation Panel</h3>
+        <p>
+          The Admin Moderation Panel displays aggregate platform metrics, moderation queues, flagged listings, user
+          lists, and audit logs.
+        </p>
+
+        <div class="figure-box">
+          <img src="admin_panel_page.png" alt="Admin Panel Page" class="figure-image-actual"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="figure-image-placeholder" style="display:none;">[admin_panel_page.png placeholder]</div>
+          <div class="figure-caption">
+            Fig 8: Admin panel interface containing metric charts and listing moderation reports.
+          </div>
+        </div>
+
+        <p style="font-size: 9.5pt; margin-top: 5px;">
+          This dashboard shows platform growth and activity metrics. Admins can moderate reported listings and manage
+          user access controls to ensure platform safety.
+        </p>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 34: PROJECT VERIFICATION & TESTING -->
+    <div class="page" id="page-34">
+      <h2>Chapter 19: Project Verification & Testing Plan</h2>
+      <div style="margin-top: 15px;">
+        <h3>Automated and Manual Verification Methodology</h3>
+        <p>
+          Thread Trade underwent a detailed testing phase to verify database validations, role-based controls, state
+          transition rules, and WebSocket event delivery.
+        </p>
+        <h4>19.1 Automated Route Integration Tests</h4>
+        <p>
+          The API endpoints were verified using test suites running mock data profiles. Key testing criteria included:
+        </p>
+        <ul>
+          <li><strong>Authentication Guards:</strong> Ensuring routes prefixing <code>/api/admin</code> return a
+            <code>403 Forbidden</code> response when accessed using standard user JWT credentials.
+          </li>
+          <li><strong>Token Refresh Cycles:</strong> Verifying that an expired JWT access token is automatically rotated
+            via the <code>/api/auth/refresh</code> endpoint using the cookie token.</li>
+          <li><strong>Input Schema Boundary Checks:</strong> Ensuring Zod validation schemas catch and reject malformed
+            registration requests, such as passwords shorter than 8 characters.</li>
+        </ul>
+        <h4>19.2 State Machine Transition Verification</h4>
+        <p>
+          Manual verification scripts verified the state machine constraints:
+        </p>
+        <ol>
+          <li>Proposing a swap changes the statuses of both items to <code>Pending</code>.</li>
+          <li>Confirming a swap updates statuses to <code>Swapped</code> and updates user swap history.</li>
+          <li>Rejecting a swap returns item statuses to <code>Available</code>, allowing them to be traded in other swap
+            requests.</li>
+        </ol>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 35: KEY PERFORMANCE INDICATORS (KPIS) -->
+    <div class="page" id="page-35">
+      <h2>Chapter 20: Key Performance Indicators & Metrics</h2>
+      <div style="margin-top: 20px;">
+        <p>
+          To measure the platform's performance and determine its effectiveness, the administrative dashboard tracks
+          several Key Performance Indicators (KPIs):
+        </p>
+        <ul>
+          <li>
+            <strong>Total Active Clothing Listings:</strong> Tracks the overall volume of active, trade-eligible items
+            on the platform, indicating user engagement and item variety.
+          </li>
+          <li>
+            <strong>Successful Swap Conversion Rate:</strong> Measures the ratio of completed swaps against total
+            proposed swaps. A high conversion rate indicates that the value calculator and location filtering are
+            helping users find compatible trades.
+          </li>
+          <li>
+            <strong>Monthly Active Users (MAU) & Engagement Rate:</strong> Tracks user activity levels, including
+            listing updates, swap proposals, and chat messages sent.
+          </li>
+          <li>
+            <strong>Geospatial Match Density:</strong> Measures the average distance between swap participants. A lower
+            average distance indicates that local location-based matching is successfully facilitating handoffs.
+          </li>
+          <li>
+            <strong>Listing-to-Request Latency:</strong> Tracks the average time between an item being listed and
+            receiving its first swap proposal.
+          </li>
+        </ul>
+        <div class="accent-block">
+          "Tracking transaction metrics helps administrators optimize matching parameters and identify popular
+          categories to improve platform engagement."
+        </div>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 36: ASSUMPTIONS & CONSTRAINTS -->
+    <div class="page" id="page-36">
+      <h2>Chapter 21: Assumptions & Constraints</h2>
+      <div style="margin-top: 20px;">
+        <h3>System Assumptions</h3>
+        <p>
+          The system architecture and business logic are built on several core operational assumptions:
+        </p>
+        <ul>
+          <li>
+            <strong>Accuracy of User Inputs:</strong> It is assumed that users upload realistic photos and input
+            accurate condition, size, and brand details for their listings.
+          </li>
+          <li>
+            <strong>Willingness to Barter:</strong> The model assumes that users are willing to trade items rather than
+            selling them for currency.
+          </li>
+          <li>
+            <strong>Availability of Local Handoffs:</strong> It is assumed that users are willing to meet locally in
+            safe public spaces to exchange garments, minimizing logistics costs.
+          </li>
+        </ul>
+
+        <h3>Technical & Operational Constraints</h3>
+        <ul>
+          <li>
+            <strong>Garment Quality Verification:</strong> The platform cannot verify the physical quality or
+            cleanliness of items. Quality checks rely on peer review ratings and inspection during the in-person
+            handoff.
+          </li>
+          <li>
+            <strong>Fair Value Subjectivity:</strong> While the calculator suggests value ranges based on brand and
+            condition, final valuations depend on user negotiation.
+          </li>
+          <li>
+            <strong>Geospatial Dependency:</strong> Proximity matching requires users to provide accurate city and state
+            details to resolve coordinates.
+          </li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 37: DELIVERABLES -->
+    <div class="page" id="page-37">
+      <h2>Chapter 22: Deliverables & Deployment Linkages</h2>
+      <div style="margin-top: 20px;">
+        <p>
+          The Thread Trade project comprises several components delivered to Unified Mentor Private Limited for
+          validation:
+        </p>
+        <ul>
+          <li>
+            <strong>Frontend Single Page Application:</strong> Reusable React 18 components, state hooks, and client
+            routing, deployed to Vercel.
+          </li>
+          <li>
+            <strong>Backend API Server:</strong> Express.js server handling authentication, listing workflows, and
+            Socket.IO events, deployed to Render.
+          </li>
+          <li>
+            <strong>Database Cluster:</strong> A hosted MongoDB Atlas database cluster featuring geospatial indexing and
+            compound indices for filtering.
+          </li>
+          <li>
+            <strong>Source Code Repositories:</strong> Git repositories containing clean code structures, configuration
+            files, and database seed scripts.
+          </li>
+          <li>
+            <strong>Project Report:</strong> This comprehensive report details the system's design, architecture,
+            database design, and testing methodology.
+          </li>
+        </ul>
+        <div class="accent-block">
+          <strong>Production Deployment URLs:</strong><br>
+          Frontend Portal (Vercel): <a href="https://thread-trade.vercel.app" target="_blank"
+            style="color: #8A7243;">https://thread-trade.vercel.app</a><br>
+          API Gateway (Render): <a href="https://thread-trade-api.onrender.com" target="_blank"
+            style="color: #8A7243;">https://thread-trade-api.onrender.com</a>
+        </div>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 38: ENVIRONMENTAL IMPACT -->
+    <div class="page" id="page-38">
+      <h2>Chapter 23: Expected Environmental Impact</h2>
+      <div style="margin-top: 20px;">
+        <p>
+          The primary goal of the Thread Trade platform is to promote sustainability by providing an alternative to the
+          fast-fashion consumption cycle. Expected positive outcomes include:
+        </p>
+        <ul>
+          <li>
+            <strong>Reducing Textile Waste:</strong> Every successful swap extends the lifecycle of a garment, keeping
+            it out of landfills and incinerators where it would release greenhouse gases.
+          </li>
+          <li>
+            <strong>Conserving Water and Energy:</strong> Extending a garment's life by just nine months reduces its
+            carbon, water, and waste footprint by around 20-30%, as it offsets the resources required to manufacture a
+            new item.
+          </li>
+          <li>
+            <strong>Lowering Logistics Emissions:</strong> Proximity-based matching encourages local exchanges, reducing
+            the carbon footprint associated with shipping items long distances.
+          </li>
+          <li>
+            <strong>Building Sustainable Communities:</strong> The platform fosters a community focused on circular
+            fashion, helping users view pre-owned garments as valuable assets rather than disposable waste.
+          </li>
+        </ul>
+        <div class="accent-block">
+          "Sustainable fashion is not just about choosing organic materials; it is about extending the life of the
+          garments we already have."
+        </div>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 39: FUTURE ENHANCEMENTS -->
+    <div class="page" id="page-39">
+      <h2>Chapter 24: Future Enhancements</h2>
+      <div style="margin-top: 15px;">
+        <p>
+          While the Phase 1 release establishes the platform's core swapping features, several enhancements are planned
+          for future iterations:
+        </p>
+        <ul>
+          <li>
+            <strong>AI-Powered Valuation & Matching:</strong> Integrating machine learning models to analyze listing
+            images, verify garment conditions, and automatically suggest fair swap pairings based on user preferences.
+          </li>
+          <li>
+            <strong>Mobile Applications:</strong> Releasing native iOS and Android versions using React Native, enabling
+            features like push notifications and live geolocation tracking for exchanges.
+          </li>
+          <li>
+            <strong>Sustainability Impact Tracker:</strong> A dashboard widget that calculates the water and carbon
+            savings generated by each user's swaps, encouraging continued participation.
+          </li>
+          <li>
+            <strong>Courier Integration:</strong> Partnering with sustainable courier services to provide low-carbon
+            shipping options for remote swaps.
+          </li>
+          <li>
+            <strong>Condition Verification Hubs:</strong> Partnering with local dry cleaners to act as drop-off and
+            quality verification centers, building trust in garment condition.
+          </li>
+        </ul>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+    <!-- PAGE 40: CONCLUSION -->
+    <div class="page" id="page-40">
+      <h2>Chapter 25: Conclusion & References</h2>
+      <div style="margin-top: 15px;">
+        <h3>Conclusion</h3>
+        <p>
+          The <strong>Thread Trade</strong> project demonstrates how a digital platform can facilitate circular fashion
+          by replacing currency transactions with a localized, barter-first marketplace. The system's architecture
+          combines a React frontend with a Node.js/Express API, MongoDB geospatial indexing, and real-time Socket.IO
+          chat to deliver an intuitive user experience.
+        </p>
+        <p>
+          By incorporating proximity-based matching and a value fairness calculator, Thread Trade resolves common
+          friction points in peer-to-peer swapping. Deployed on cloud infrastructure, the platform is prepared to grow
+          and support a community dedicated to reducing textile waste and promoting sustainable fashion.
+        </p>
+
+        <h3>References</h3>
+        <ol style="font-size: 9.5pt;">
+          <li>Ellen MacArthur Foundation. (2017). <em>A new textiles economy: Redesigning fashion's future.</em></li>
+          <li>MongoDB, Inc. <em>Geospatial Queries and 2dsphere Indexes Documentation.</em></li>
+          <li>React Open Source Community. <em>Context API State Management Patterns.</em></li>
+          <li>Socket.IO Community. <em>WebSocket Protocol and Real-Time Event Communication Guidelines.</em></li>
+          <li>United Nations Environmental Program (UNEP). (2020). <em>The Environmental Cost of Fast Fashion.</em></li>
+        </ol>
+      </div>
+      <div class="page-number-container"><span class="page-number"></span></div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
