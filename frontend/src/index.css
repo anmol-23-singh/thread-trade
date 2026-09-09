@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Global reset for responsive design ──────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%; /* prevent iOS font-size inflation */
+}
+
+body {
+  overflow-x: hidden;
+  min-width: 320px;               /* never clip below 320px (iPhone SE) */
+}
+
+/* Snappier taps on mobile — removes 300ms delay */
+button,
+a,
+select,
+input,
+textarea {
+  touch-action: manipulation;
+}
+
+/* ── Hang-tag pin decoration ─────────────────────────────────────────────── */
 .hangtag {
   position: relative;
   border-radius: 4px;

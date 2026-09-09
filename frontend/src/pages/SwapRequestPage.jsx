@@ -54,29 +54,50 @@ export default function SwapRequestPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-8 py-9">
-      <button onClick={() => navigate(-1)} className="text-sm text-[#4E3629]/75 hover:text-[#4E3629] mb-4">← Back</button>
-      <div className="text-xs uppercase tracking-wide text-[#A67A1E] font-semibold">Propose a swap</div>
-      <h1 className="font-display text-3xl font-bold mt-1 text-[#4E3629]">Trade for "{wanted.title}"</h1>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-9">
+      <button
+        onClick={() => navigate(-1)}
+        className="text-sm text-[#4E3629]/75 hover:text-[#4E3629] mb-4 inline-flex items-center gap-1"
+      >
+        ← Back
+      </button>
+      <div className="text-[10px] sm:text-xs uppercase tracking-wide text-[#A67A1E] font-semibold">
+        Propose a swap
+      </div>
+      <h1 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold mt-1 text-[#4E3629] leading-tight">
+        Trade for "{wanted.title}"
+      </h1>
 
       {mine.length === 0 ? (
-        <div className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 rounded-xl p-6 mt-6">
+        <div className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 rounded-xl p-5 sm:p-6 mt-6">
           <PushPin />
-          <p className="text-sm">You don't have any items listed yet, so there's nothing to offer in trade.</p>
-          <button onClick={() => navigate('/dashboard')} className="bg-[#4E3629] text-paperRaised rounded px-4 py-2 text-sm mt-3">
+          <p className="text-sm">
+            You don't have any items listed yet, so there's nothing to offer in trade.
+          </p>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="bg-[#4E3629] text-paperRaised rounded-lg px-4 py-2.5 text-sm mt-3 hover:bg-[#4E3629]/90 transition-colors"
+          >
             List an item first
           </button>
         </div>
       ) : (
-        <div className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 rounded-xl shadow-sm p-6 mt-6 space-y-4">
+        <div className="relative overflow-visible bg-[#FBFAF4] border border-[#4E3629]/15 rounded-xl shadow-sm p-4 sm:p-6 mt-6 space-y-4">
           <PushPin />
-          {error && <div className="text-sm text-rust bg-rust/10 border border-rust/20 rounded p-2">{error}</div>}
+
+          {error && (
+            <div className="text-sm text-rust bg-rust/10 border border-rust/20 rounded p-2">{error}</div>
+          )}
+
+          {/* Item selector */}
           <div>
-            <label className="block text-xs font-semibold text-ink/60 mb-1">Choose an item to offer</label>
+            <label className="block text-xs font-semibold text-ink/60 mb-1">
+              Choose an item to offer
+            </label>
             <select
               value={offeredId}
               onChange={(e) => setOfferedId(e.target.value)}
-              className="w-full border border-ink/15 rounded px-3 py-2 bg-paper text-sm"
+              className="w-full border border-ink/15 rounded-lg px-3 py-2.5 bg-paper text-sm focus:outline-none focus:ring-1 focus:ring-gold"
             >
               {mine.map((l) => (
                 <option key={l._id} value={l._id}>
@@ -86,18 +107,19 @@ export default function SwapRequestPage() {
             </select>
           </div>
 
+          {/* Trade comparison — wraps nicely on small screens */}
           {offered && (
             <div className="text-center py-3">
-              <div className="flex items-center justify-center gap-6">
-                <div className="text-sm">
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                <div className="text-sm min-w-[100px]">
                   <div className="text-3xl">👕</div>
-                  {offered.title}
+                  <div className="font-medium">{offered.title}</div>
                   <div className="font-mono text-[#A67A1E]">~₹{offered.estimatedValue}</div>
                 </div>
-                <div className="italic text-ink/50 font-display">for</div>
-                <div className="text-sm">
+                <div className="italic text-ink/50 font-display text-lg">for</div>
+                <div className="text-sm min-w-[100px]">
                   <div className="text-3xl">👕</div>
-                  {wanted.title}
+                  <div className="font-medium">{wanted.title}</div>
                   <div className="font-mono text-[#A67A1E]">~₹{wanted.estimatedValue}</div>
                 </div>
               </div>
@@ -111,28 +133,36 @@ export default function SwapRequestPage() {
             </div>
           )}
 
+          {/* Cash top-up */}
           <div>
-            <label className="block text-xs font-semibold text-ink/60 mb-1">Optional cash top-up (₹)</label>
+            <label className="block text-xs font-semibold text-ink/60 mb-1">
+              Optional cash top-up (₹)
+            </label>
             <input
               type="number"
               min="0"
               value={cashTopUp}
               onChange={(e) => setCashTopUp(e.target.value)}
-              className="w-full border border-ink/15 rounded px-3 py-2 bg-paper text-sm"
+              className="w-full border border-ink/15 rounded-lg px-3 py-2.5 bg-paper text-sm focus:outline-none focus:ring-1 focus:ring-gold"
             />
           </div>
 
+          {/* Note */}
           <div>
             <label className="block text-xs font-semibold text-ink/60 mb-1">Note to the owner</label>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="e.g. Happy to add a small cash top-up if the value doesn't match exactly."
-              className="w-full border border-ink/15 rounded px-3 py-2 bg-paper text-sm min-h-[70px]"
+              className="w-full border border-ink/15 rounded-lg px-3 py-2.5 bg-paper text-sm min-h-[80px] focus:outline-none focus:ring-1 focus:ring-gold"
             />
           </div>
 
-          <button onClick={handleSubmit} disabled={submitting} className="bg-green text-paperRaised rounded px-5 py-2.5 text-sm font-semibold">
+          <button
+            onClick={handleSubmit}
+            disabled={submitting}
+            className="w-full bg-green text-paperRaised rounded-lg px-5 py-3 text-sm font-semibold disabled:opacity-60 hover:opacity-90 transition-opacity"
+          >
             {submitting ? 'Sending...' : 'Send swap request'}
           </button>
         </div>
