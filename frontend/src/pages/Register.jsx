@@ -19,7 +19,11 @@ export default function Register() {
       await register(form);
       navigate('/listings');
     } catch (err) {
-      setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.message || 'Registration failed');
+      setError(
+        err.response?.data?.errors?.[0]?.message ||
+        err.response?.data?.message ||
+        'Registration failed. Please check your details and try again.'
+      );
     } finally {
       setLoading(false);
     }

@@ -20,14 +20,34 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// --- Security & parsing middleware ---
-app.use(helmet());
+// --- Health check FIRST — before CORS/helmet so Render pings never 500 ---
+app.get('/', (req, res) => res.json({ success: true, status: 'ok' }));
+app.head('/', (req, res) => res.sendStatus(200));
+app.get('/api/health', (req, res) => res.json({ success: true, status: 'ok', time: new Date().toISOString() }));
+
+// --- CORS ---
+// Support multiple allowed origins: comma-separate them in CLIENT_URL env var.
+// Example: CLIENT_URL=http://localhost:5173,https://thread-trade.vercel.app
+const rawOrigins = (process.env.CLIENT_URL || 'http://localhost:5173').split(',');
+const allowedOrigins = rawOrigins.map((o) => o.trim().replace(/\/$/, '')).filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (incomingOrigin, callback) => {
+      // No origin = server-to-server / curl / Render health check → allow
+      if (!incomingOrigin) return callback(null, false);
+      // Sanitise the incoming origin (strip trailing slash) before comparing
+      const sanitised = (incomingOrigin || '').trim().replace(/\/$/, '');
+      if (allowedOrigins.includes(sanitised)) return callback(null, true);
+      // Unknown origin: block but don't crash — return false (no CORS header)
+      return callback(null, false);
+    },
     credentials: true, // required so the httpOnly refresh-token cookie is sent
   })
 );
+
+// --- Security & parsing middleware ---
+app.use(helmet());
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -42,9 +62,6 @@ app.use(
     max: Number(process.env.RATE_LIMIT_MAX) || 200,
   })
 );
-
-// --- Health check (useful for Render/Docker) ---
-app.get('/api/health', (req, res) => res.json({ success: true, status: 'ok', time: new Date().toISOString() }));
 
 // --- Routes ---
 app.use('/api/auth', authRoutes);
