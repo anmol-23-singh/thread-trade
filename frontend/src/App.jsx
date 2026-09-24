@@ -38,10 +38,7 @@ export default function App() {
             <circle cx="100" cy="0" r="105" fill="none" stroke="currentColor" strokeWidth="0.4" />
             <circle cx="100" cy="0" r="125" fill="none" stroke="currentColor" strokeWidth="0.4" />
           </svg>
-          {/* Sparkle star bottom right */}
-          <svg className="absolute right-12 bottom-12 w-6 h-6 text-[#C9962C] opacity-40" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z" />
-          </svg>
+
         </div>
       )}
 
