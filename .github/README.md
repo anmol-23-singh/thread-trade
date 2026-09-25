@@ -8,3 +8,5 @@ This directory contains GitHub-specific configuration files for the Thread Trade
 ## Guidelines
 Please follow the PR template when submitting changes to ensure consistency.
 
+> Note: Issue templates have been removed. Please open a plain issue with a descriptive title.
+
