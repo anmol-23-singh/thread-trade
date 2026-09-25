@@ -1,10 +1,10 @@
 # .github
 
-This directory contains GitHub-specific configuration files.
+This directory contains GitHub-specific configuration files for the Thread Trade project.
 
 ## Contents
-- `PULL_REQUEST_TEMPLATE.md`: Template for pull requests
+- `PULL_REQUEST_TEMPLATE.md`: Standard template for all pull requests
 
-## Contributing
-Please follow the PR template when submitting changes.
+## Guidelines
+Please follow the PR template when submitting changes to ensure consistency.
 
